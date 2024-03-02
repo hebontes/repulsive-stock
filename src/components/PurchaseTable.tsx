@@ -3,21 +3,22 @@ import React, { useState } from 'react'
 
 const PurchaseTable = ({
   results,
+  paymentPerTick,
 }: {
   results: { c: string; t: string }[]
+  paymentPerTick: number
 }) => {
   const stocks = results
-  const monthlyPayment = 30
 
   const totalShares = stocks.reduce(
     (_previousValue: number, currentValue: { c: string; t: string }) => {
       const shareValue = currentValue.c
-      return _previousValue + monthlyPayment / Number(shareValue)
+      return _previousValue + paymentPerTick / Number(shareValue)
     },
     0
   )
 
-  const moneySpent = stocks.length * monthlyPayment
+  const moneySpent = stocks.length * paymentPerTick
 
   return (
     <div>
@@ -32,7 +33,7 @@ const PurchaseTable = ({
         </div>
         {stocks.map((stock) => {
           const shareValue = Number(stock.c)
-          const purchasedShare = monthlyPayment / Number(shareValue)
+          const purchasedShare = paymentPerTick / Number(shareValue)
           const date = new Date(stock.t)
           const year = date.getUTCFullYear()
           const month = date.getUTCMonth() + 1
